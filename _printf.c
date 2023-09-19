@@ -1,38 +1,34 @@
 #include "main.h"
 
 /**
- * _printf - print the thing into stantard output
- *		receiving the necesary arguments
- * @format: the input containing all speciifiers
- * Return: amount of chars printed
+ * _printf - prints according to a given format. printf Implementation.
+ * @format: string holding characters and format of arguments to be printed.
+ *
+ * Return: number of charaters printed.
  */
 
 int _printf(const char *format, ...)
 {
-	int count;
-	convert_t form_list[] = {
-		{"c", print_char},
-		{"s", print_string},
-		{"%", print_percent},
-		{"d", print_integer},
-		{"i", print_integer},
-		{"b", print_binary},
-		{"u", print_unsigned},
-		{"o", print_octal},
-		{"x", print_hex},
-		{"X", print_heX}
-	};
-	va_list arg_list;
+	va_list original, copy;
+	int n_printed = 0, error = 0;
 
+	if (format == NULL || *format == '\0')
+		return (-1);
 
-	if (format == NULL)
+	va_start(original, format);
+	va_copy(copy, original);
+
+	error = check_input(format, &original);
+
+	if (error != 0)
 	{
-	return (-1);
+		return (error * -1);
 	}
 
-	va_start(arg_list, format);
-	count = parser(format, form_list, arg_list);
-	va_end(arg_list);
+	n_printed = print_output(format, &copy);
 
-	return (count);
+	va_end(original);
+	va_end(copy);
+
+	return (n_printed);
 }
