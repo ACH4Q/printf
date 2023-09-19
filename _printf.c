@@ -1,38 +1,37 @@
 #include "main.h"
 
 /**
- * _printf - print the thing into stantard output
- *		receiving the necesary arguments
- * @format: the input containing all speciifiers
- * Return: amount of chars printed
+ * _printf - Receives the main string and all the necessary parameters to
+ * print a formated string
+ * @format: A string containing all the desired characters
+ * Return: A total count of the characters printed
  */
-
 int _printf(const char *format, ...)
 {
-	int count;
-	convert_t form_list[] = {
+	int printed_chars;
+	conver_t f_list[] = {
 		{"c", print_char},
 		{"s", print_string},
 		{"%", print_percent},
 		{"d", print_integer},
 		{"i", print_integer},
 		{"b", print_binary},
-		{"u", print_unsigned},
+		{"r", print_reversed},
+		{"R", rot13},
+		{"u", unsigned_integer},
 		{"o", print_octal},
 		{"x", print_hex},
-		{"X", print_heX}
+		{"X", print_heX},
+		{NULL, NULL}
 	};
 	va_list arg_list;
 
-
 	if (format == NULL)
-	{
-	return (-1);
-	}
+		return (-1);
 
 	va_start(arg_list, format);
-	count = parser(format, form_list, arg_list);
+	/*Calling parser function*/
+	printed_chars = parser(format, f_list, arg_list);
 	va_end(arg_list);
-
-	return (count);
+	return (printed_chars);
 }
